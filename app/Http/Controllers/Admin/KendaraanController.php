@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AreaParkir;
 use App\Models\Kendaraan;
 use App\Models\User;
+use App\Models\Transaksi;
+use App\Models\Tarif;
 use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
@@ -35,9 +37,32 @@ class KendaraanController extends Controller
             return back()->withErrors(['id_area' => 'Area parkir "' . $area->nama_area . '" sudah penuh!'])->withInput();
         }
 
-        Kendaraan::create($request->all());
+        $kendaraan = Kendaraan::create($request->all());
 
-        return redirect()->route('admin.kendaraan.index')->with('success', 'Kendaraan berhasil ditambahkan ke area ' . $area->nama_area . '.');
+        // Otomatis buat transaksi masuk agar muncul di halaman petugas
+        // Gunakan strtolower() karena data tarif di DB disimpan huruf kecil (motor/mobil)
+        $tarif = Tarif::whereRaw('LOWER(jenis_kendaraan) = ?', [strtolower($kendaraan->jenis_kendaraan)])->first();
+
+        if (!$tarif) {
+            // Fallback: ambil tarif pertama yang tersedia
+            $tarif = Tarif::first();
+        }
+
+        if ($tarif) {
+            Transaksi::create([
+                'id_kendaraan' => $kendaraan->id_kendaraan,
+                'waktu_masuk'  => now(),
+                'id_tarif'     => $tarif->id_tarif,
+                'status'       => 'masuk',
+                'id_user'      => $request->id_user,
+                'id_area'      => $kendaraan->id_area,
+            ]);
+
+            // Tambah slot terisi di area parkir
+            $area->increment('terisi');
+        }
+
+        return redirect()->route('admin.kendaraan.index')->with('success', 'Kendaraan berhasil ditambahkan ke area ' . $area->nama_area . ' dan otomatis masuk ke daftar parkir aktif (Petugas).');
     }
 
     public function update(Request $request, $id)

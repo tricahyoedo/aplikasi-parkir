@@ -6,7 +6,7 @@
 <div class="card shadow-sm border-0">
     <div class="card-body">
         <h5>Manajemen Data Kendaraan</h5>
-        <p class="text-muted">Kelola data seluruh kendaraan yang pernah terdaftar/parkir.</p>
+        <p class="text-muted">Kelola data seluruh kendaraan. Setiap kendaraan baru yang ditambahkan akan <strong>otomatis masuk ke antrian parkir aktif</strong> di halaman Petugas.</p>
         
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -32,6 +32,7 @@
                         <th>Merk / Tipe</th>
                         <th>Area Parkir</th>
                         <th>Pemilik</th>
+                        <th>Status Parkir</th>
                         <th>Dicatat Oleh</th>
                         <th>Aksi</th>
                     </tr>
@@ -44,6 +45,17 @@
                         <td>{{ $kendaraan->merk }}</td>
                         <td>{{ $kendaraan->area->nama_area ?? 'Belum ditentukan' }}</td>
                         <td>{{ $kendaraan->pemilik }}</td>
+                        <td>
+                            @php
+                                $transaksiAktif = \App\Models\Transaksi::where('id_kendaraan', $kendaraan->id_kendaraan)->where('status', 'masuk')->first();
+                            @endphp
+                            @if($transaksiAktif)
+                                <span class="badge bg-success">🅿️ Sedang Parkir</span>
+                                <small class="d-block text-muted">Masuk: {{ $transaksiAktif->waktu_masuk->format('H:i') }}</small>
+                            @else
+                                <span class="badge bg-secondary">Tidak Aktif</span>
+                            @endif
+                        </td>
                         <td>{{ $kendaraan->user->nama_lengkap ?? 'Unknown' }}</td>
                         <td>
                             <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editKendaraanModal{{ $kendaraan->id_kendaraan }}">Edit</button>
@@ -132,44 +144,65 @@
             <form action="{{ route('admin.kendaraan.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
+                    <div class="alert alert-info py-2 mb-3">
+                        <i class="bi bi-info-circle"></i> Kendaraan yang ditambahkan akan <strong>otomatis masuk ke daftar kendaraan parkir aktif</strong> di halaman Petugas.
+                    </div>
                     <div class="mb-3">
-                        <label>Plat Nomor</label>
-                        <input type="text" name="plat_nomor" class="form-control" required>
+                        <label>Plat Nomor <small class="text-muted">(harus unik, contoh: B 1234 ABC)</small></label>
+                        <input type="text" name="plat_nomor" class="form-control @error('plat_nomor') is-invalid @enderror" value="{{ old('plat_nomor') }}" required>
+                        @error('plat_nomor')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label>Jenis Kendaraan</label>
-                        <select name="jenis_kendaraan" class="form-select" required>
-                            <option value="Mobil">Mobil</option>
-                            <option value="Motor">Motor</option>
+                        <select name="jenis_kendaraan" class="form-select @error('jenis_kendaraan') is-invalid @enderror" required>
+                            <option value="Mobil" {{ old('jenis_kendaraan') == 'Mobil' ? 'selected' : '' }}>Mobil</option>
+                            <option value="Motor" {{ old('jenis_kendaraan') == 'Motor' ? 'selected' : '' }}>Motor</option>
                         </select>
+                        @error('jenis_kendaraan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label>Merk Kendaraan (Contoh: Vario, CBR, Avanza)</label>
-                        <input type="text" name="merk" class="form-control" required>
+                        <input type="text" name="merk" class="form-control @error('merk') is-invalid @enderror" value="{{ old('merk') }}" required>
+                        @error('merk')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label>Pemilik</label>
-                        <input type="text" name="pemilik" class="form-control" required>
+                        <input type="text" name="pemilik" class="form-control @error('pemilik') is-invalid @enderror" value="{{ old('pemilik') }}" required>
+                        @error('pemilik')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label>Lokasi Area Parkir</label>
-                        <select name="id_area" class="form-select" required>
+                        <select name="id_area" class="form-select @error('id_area') is-invalid @enderror" required>
                             <option value="" disabled selected>Pilih Area Parkir</option>
                             @foreach($areas as $area)
                                 @php $sisa = $area->kapasitas - $area->kendaraans_count; @endphp
-                                <option value="{{ $area->id_area }}" {{ $sisa <= 0 ? 'disabled' : '' }}>
+                                <option value="{{ $area->id_area }}" {{ $sisa <= 0 ? 'disabled' : '' }} {{ old('id_area') == $area->id_area ? 'selected' : '' }}>
                                     {{ $area->nama_area }} (Sisa Slot: {{ max(0, $sisa) }}) {{ $sisa <= 0 ? '- PENUH' : '' }}
                                 </option>
                             @endforeach
                         </select>
+                        @error('id_area')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label>Petugas Pencatat</label>
-                        <select name="id_user" class="form-select" required>
+                        <select name="id_user" class="form-select @error('id_user') is-invalid @enderror" required>
                             @foreach($users as $user)
-                                <option value="{{ $user->id_user }}">{{ $user->nama_lengkap }} ({{ $user->role }})</option>
+                                <option value="{{ $user->id_user }}" {{ old('id_user') == $user->id_user ? 'selected' : '' }}>{{ $user->nama_lengkap }} ({{ $user->role }})</option>
                             @endforeach
                         </select>
+                        @error('id_user')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
