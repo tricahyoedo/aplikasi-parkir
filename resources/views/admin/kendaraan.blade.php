@@ -34,6 +34,7 @@
                         <th>Pemilik</th>
                         <th>Status Parkir</th>
                         <th>Dicatat Oleh</th>
+                        <th>Waktu Dicatat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -57,6 +58,7 @@
                             @endif
                         </td>
                         <td>{{ $kendaraan->user->nama_lengkap ?? 'Unknown' }}</td>
+                        <td>{{ $kendaraan->created_at ? $kendaraan->created_at->format('d/m/Y H:i') : '-' }}</td>
                         <td>
                             <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editKendaraanModal{{ $kendaraan->id_kendaraan }}">Edit</button>
                             <form action="{{ route('admin.kendaraan.destroy', $kendaraan->id_kendaraan) }}" method="POST" class="d-inline">
