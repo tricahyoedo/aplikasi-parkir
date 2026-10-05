@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,117 +9,181 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
-            background-color: #f0f5fb;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #2c3e50;
+            background-color: #f0fdf9;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #1a2e2b;
         }
 
-        /* Sidebar Styling */
+        /* ===================== SIDEBAR ===================== */
         .sidebar {
             height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(160deg, #0f766e 0%, #059669 100%);
             color: white;
-            padding-top: 30px;
-            box-shadow: 2px 0 15px rgba(30, 60, 114, 0.1);
+            padding-top: 0;
+            box-shadow: 2px 0 20px rgba(15, 118, 110, 0.2);
             position: fixed;
             width: 250px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 3px;
         }
 
         .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.45);
         }
 
-        .sidebar h4 {
-            font-weight: 700;
+        /* Sidebar brand */
+        .sidebar-brand {
+            padding: 22px 18px 18px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand .brand-icon i {
             font-size: 1.3rem;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 15px;
-            margin: 0 20px 20px 20px;
+            color: white;
+        }
+
+        .sidebar-brand .brand-text span {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: white;
+            line-height: 1.25;
+            display: block;
+        }
+
+        .sidebar-brand .brand-text small {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 14px 0;
         }
 
         .sidebar .menu-label {
-            padding-left: 20px;
-            margin-bottom: 15px;
-            font-size: 0.75rem;
+            padding-left: 18px;
+            margin: 6px 0 8px 0;
+            font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1.8px;
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 600;
         }
 
         .sidebar a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.82);
             text-decoration: none;
-            padding: 12px 20px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            margin: 5px 10px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            gap: 10px;
+            margin: 2px 10px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-size: 0.88rem;
             font-weight: 500;
+            position: relative;
+        }
+
+        .sidebar a i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
         }
 
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.15);
             color: white;
-            transform: translateX(5px);
         }
 
         .sidebar a.active {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.22);
             color: white;
-            border-left: 3px solid #00bfff;
-            padding-left: 17px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar a.active::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            width: 3px;
+            height: 22px;
+            background: #a7f3d0;
+            border-radius: 2px;
         }
 
         .sidebar .logout-btn {
-            margin-top: 40px;
-            padding: 0 10px;
+            padding: 12px 10px 18px 10px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .sidebar .logout-btn .btn {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.12);
             color: white;
-            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .sidebar .logout-btn .btn:hover {
-            background-color: rgba(255, 59, 48, 0.9);
-            border-color: rgba(255, 59, 48, 0.9);
+            background-color: rgba(239, 68, 68, 0.85);
+            border-color: rgba(239, 68, 68, 0.85);
         }
 
-        /* Main Content */
+        /* ===================== MAIN CONTENT ===================== */
         .content {
             padding: 0;
             margin-left: 250px;
             width: calc(100% - 250px);
-            main width: 0;
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -127,60 +192,72 @@
             position: relative;
         }
 
-        /* Header Section */
         .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 15px 25px;
-            box-shadow: 0 2px 8px rgba(30, 60, 114, 0.08);
+            padding: 14px 28px;
+            box-shadow: 0 1px 0 #d1fae5, 0 2px 8px rgba(0, 0, 0, 0.04);
             flex-shrink: 0;
-            border-bottom: 1px solid #e0e6ed;
-            font-size: 1rem;
+            border-bottom: 1px solid #d1fae5;
         }
 
         .content-header h2 {
-            color: #1e3c72;
+            color: #064e3b;
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin: 0;
         }
 
         .content-header .user-info {
-            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0f766e, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         .content-header .user-info span {
-            color: #666;
-            font-size: 0.85rem;
-            display: inline;
+            color: #6b7280;
+            font-size: 0.84rem;
         }
 
         .content-header .user-info strong {
-            color: #1e3c72;
-            display: inline;
-            margin: 0 5px;
+            color: #064e3b;
+            font-weight: 600;
         }
 
-        /* Content wrapper untuk scrollable content */
         .content-wrapper {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 15px 20px;
-            background-color: #f0f5fb;
+            padding: 20px 24px;
+            background-color: #f0fdf9;
         }
 
-        /* Card Styling */
+        /* ===================== CARDS ===================== */
         .card {
             border: none;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(30, 60, 114, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
+            transition: box-shadow 0.2s ease;
         }
 
         .card:last-child {
@@ -188,51 +265,52 @@
         }
 
         .card:hover {
-            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.12);
+            box-shadow: 0 4px 16px rgba(15, 118, 110, 0.12);
         }
 
         .card.text-bg-primary {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #0f766e 0%, #059669 100%);
             color: white !important;
         }
 
         .card.text-bg-success {
-            background: linear-gradient(135deg, #00b894 0%, #00a676 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white !important;
         }
 
         .card.text-bg-warning {
-            background: linear-gradient(135deg, #ffa502 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white !important;
         }
 
         .card.text-bg-danger {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white !important;
         }
 
         .card.text-bg-info {
-            background: linear-gradient(135deg, #00bfff 0%, #0080ff 100%);
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
             color: white !important;
         }
 
         .card.text-bg-dark {
-            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
             color: white !important;
         }
 
         .card.text-bg-secondary {
-            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white !important;
         }
 
         .card-header {
-            padding: 12px 18px;
+            padding: 14px 18px;
             flex-shrink: 0;
+            font-weight: 600;
         }
 
         .card-body {
-            padding: 14px 18px;
+            padding: 16px 18px;
             flex: 0 0 auto;
         }
 
@@ -247,55 +325,57 @@
             font-size: 0.9rem;
         }
 
-        /* Button Styling */
+        /* ===================== BUTTONS ===================== */
         .btn-primary {
-            background-color: #1e3c72;
+            background: linear-gradient(135deg, #0f766e, #059669);
             border: none;
             border-radius: 8px;
-            padding: 10px 24px;
+            padding: 9px 20px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
-            background-color: #0f1e3d;
-            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+            background: linear-gradient(135deg, #0d6b64, #047857);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
         }
 
         .btn-secondary {
-            background-color: #7f8c8d;
+            background-color: #6b7280;
             border: none;
             border-radius: 8px;
             font-weight: 600;
         }
 
         .btn-secondary:hover {
-            background-color: #5a6c7d;
+            background-color: #4b5563;
         }
 
-        /* Form Styling */
-        .form-control, .form-select {
-            border: 1.5px solid #e0e6ed;
+        /* ===================== FORMS ===================== */
+        .form-control,
+        .form-select {
+            border: 1.5px solid #d1fae5;
             border-radius: 8px;
-            padding: 10px 15px;
-            transition: all 0.3s ease;
-            background-color: #fafbfc;
+            padding: 10px 14px;
+            transition: all 0.2s ease;
+            background-color: #fafafa;
         }
 
-        .form-control:focus, .form-select:focus {
-            border-color: #2a5298;
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #10b981;
             background-color: white;
-            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
         .form-label {
             font-weight: 600;
-            color: #2c3e50;
+            color: #374151;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
 
-        /* Alert Styling */
+        /* ===================== ALERTS ===================== */
         .alert {
             border: none;
             border-radius: 10px;
@@ -303,59 +383,62 @@
         }
 
         .alert-danger {
-            background-color: #ffe5e5;
-            color: #cc0000;
-            border-left-color: #ff6b6b;
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border-left-color: #ef4444;
         }
 
         .alert-success {
-            background-color: #e5f9f0;
-            color: #00b894;
-            border-left-color: #00b894;
+            background-color: #ecfdf5;
+            color: #047857;
+            border-left-color: #10b981;
         }
 
-        /* Table Styling */
+        /* ===================== TABLES ===================== */
         .table {
             border-collapse: separate;
             border-spacing: 0;
         }
 
         .table thead th {
-            background-color: #f8fafb;
-            border-bottom: 2px solid #e0e6ed;
-            color: #1e3c72;
+            background-color: #f0fdf9;
+            border-bottom: 2px solid #d1fae5;
+            color: #064e3b;
             font-weight: 700;
-            padding: 15px;
+            padding: 13px 15px;
+            font-size: 0.875rem;
         }
 
         .table tbody td {
             padding: 12px 15px;
-            border-bottom: 1px solid #e8ecf1;
+            border-bottom: 1px solid #ecfdf5;
+            font-size: 0.9rem;
         }
 
         .table tbody tr:hover {
-            background-color: #f8fafb;
+            background-color: #f0fdf9;
         }
 
-        /* Modal Styling */
+        /* ===================== MODALS ===================== */
         .modal-content {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 14px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #0f766e 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 20px 25px;
+            padding: 18px 24px;
+            border-radius: 14px 14px 0 0;
         }
 
         .modal-header .btn-close {
             filter: brightness(0) invert(1);
         }
 
-        /* Responsive */
+        /* ===================== RESPONSIVE ===================== */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -379,7 +462,7 @@
             }
 
             .content-header h2 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             .content-header .user-info {
@@ -387,108 +470,146 @@
             }
 
             .card-body {
-                padding: 15px;
+                padding: 14px;
             }
 
             .card-title {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
         }
 
         i {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
     </style>
 </head>
+
 <body>
 
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h4 class="text-start">
-            <i class="bi bi-p-square-fill me-2"></i>Aplikasi Parkir
-        </h4>
-        <div class="menu-label">Menu {{ strtoupper(Auth::user()->role) }}</div>
-        
-        @if(Auth::user()->role == 'admin')
-            <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-            <a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i> Kelola User
-            </a>
-            <a href="{{ route('admin.tarif.index') }}" class="{{ request()->routeIs('admin.tarif.*') ? 'active' : '' }}">
-                <i class="bi bi-tags"></i> Tarif Parkir
-            </a>
-            <a href="{{ route('admin.area.index') }}" class="{{ request()->routeIs('admin.area.*') ? 'active' : '' }}">
-                <i class="bi bi-map"></i> Area Parkir
-            </a>
-            <a href="{{ route('admin.kendaraan.index') }}" class="{{ request()->routeIs('admin.kendaraan.*') ? 'active' : '' }}">
-                <i class="bi bi-car-front"></i> Data Kendaraan
-            </a>
-            <a href="{{ route('admin.log.index') }}" class="{{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
-                <i class="bi bi-clock-history"></i> Log Aktifitas
-            </a>
-        @elseif(Auth::user()->role == 'petugas')
-            <a href="{{ route('petugas.dashboard') }}" class="{{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-            <a href="{{ route('petugas.transaksi.index') }}" class="{{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
-                <i class="bi bi-receipt"></i> Transaksi Parkir
-            </a>
-        @elseif(Auth::user()->role == 'owner')
-            <a href="{{ route('owner.dashboard') }}" class="{{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-            <a href="{{ route('owner.rekap.index') }}" class="{{ request()->routeIs('owner.rekap.*') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-bar-graph"></i> Rekap Transaksi
-            </a>
-        @endif
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon" style="background:rgba(255,255,255,0.15); padding:0; overflow:hidden;">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;display:block;">
+                        <text x="36" y="72" font-family="Arial, sans-serif" font-size="66" font-weight="bold" fill="white" text-anchor="middle">P</text>
+                        <rect x="50" y="66" width="22" height="7" rx="3" fill="white" opacity="0.85"/>
+                        <circle cx="54" cy="74" r="3.5" fill="white" opacity="0.85"/>
+                        <circle cx="68" cy="74" r="3.5" fill="white" opacity="0.85"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span>Aplikasi Parkir</span>
+                    <small>Sistem Parkir Digital</small>
+                </div>
+            </div>
 
-        <div class="logout-btn">
-            <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-        </div>
-    </div>
+            <div class="sidebar-nav">
+                <div class="menu-label">Menu {{ strtoupper(Auth::user()->role) }}</div>
 
-    <!-- Main Content -->
-    <div class="content">
-        <div class="content-header">
-            <h2>@yield('title')</h2>
-            <div class="user-info">
-                <span>Halo, {{ Auth::user()->nama_lengkap }} ({{ ucfirst(Auth::user()->role) }})</span>
+                @if(Auth::user()->role == 'admin')
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                    <a href="{{ route('admin.user.index') }}"
+                        class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                        <i class="bi bi-people"></i> Kelola User
+                    </a>
+                    <a href="{{ route('admin.tarif.index') }}"
+                        class="{{ request()->routeIs('admin.tarif.*') ? 'active' : '' }}">
+                        <i class="bi bi-tags"></i> Tarif Parkir
+                    </a>
+                    <a href="{{ route('admin.area.index') }}"
+                        class="{{ request()->routeIs('admin.area.*') ? 'active' : '' }}">
+                        <i class="bi bi-map"></i> Area Parkir
+                    </a>
+                    <a href="{{ route('admin.kendaraan.index') }}"
+                        class="{{ request()->routeIs('admin.kendaraan.*') ? 'active' : '' }}">
+                        <i class="bi bi-car-front"></i> Data Kendaraan
+                    </a>
+                    <a href="{{ route('admin.log.index') }}"
+                        class="{{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
+                        <i class="bi bi-clock-history"></i> Log Aktifitas
+                    </a>
+                @elseif(Auth::user()->role == 'petugas')
+                    <a href="{{ route('petugas.dashboard') }}"
+                        class="{{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                    <a href="{{ route('petugas.transaksi.index') }}"
+                        class="{{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i> Transaksi Parkir
+                    </a>
+                @elseif(Auth::user()->role == 'owner')
+                    <a href="{{ route('owner.dashboard') }}"
+                        class="{{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                    <a href="{{ route('owner.rekap.index') }}"
+                        class="{{ request()->routeIs('owner.rekap.*') ? 'active' : '' }}">
+                        <i class="bi bi-file-earmark-bar-graph"></i> Rekap Transaksi
+                    </a>
+                @endif
+            </div>
+
+            <div class="logout-btn">
+                <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
             </div>
         </div>
 
-        <div class="content-wrapper">
-            @yield('content')
+        <!-- Main Content -->
+        <div class="content">
+            <div class="content-header">
+                <h2>@yield('title')</h2>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        {{ strtoupper(substr(Auth::user()->nama_lengkap, 0, 1)) }}
+                    </div>
+                    <div>
+                        <span>Halo, <strong>{{ Auth::user()->nama_lengkap }}</strong></span>
+                        <span class="d-block"
+                            style="font-size:0.75rem; color:#9ca3af;">{{ ucfirst(Auth::user()->role) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Apakah Anda yakin ingin keluar dari aplikasi?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-            @csrf
-            <button type="submit" class="btn btn-danger">Ya, Logout</button>
-        </form>
-      </div>
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">
+                        <i class="bi bi-box-arrow-right me-2"></i>Konfirmasi Logout
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 20px 24px; color: #374151;">
+                    Apakah Anda yakin ingin keluar dari aplikasi?
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #f3f4f6; padding: 16px 24px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger" style="border-radius:8px; font-weight:600;">
+                            <i class="bi bi-box-arrow-right me-1"></i>Ya, Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
+
 </html>

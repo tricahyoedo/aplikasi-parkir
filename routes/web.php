@@ -18,7 +18,37 @@ Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(functi
         $totalArea = App\Models\AreaParkir::count();
         $totalKendaraan = App\Models\Kendaraan::count();
         $totalLog = App\Models\LogAktivitas::count();
-        return view('admin.dashboard', compact('totalUser', 'totalArea', 'totalKendaraan', 'totalLog'));
+
+        // Data for Status Fasilitas
+        $areas = App\Models\AreaParkir::all();
+
+        // Data for Aktivitas Parkir (Bar chart)
+        $transaksiHariIni = App\Models\Transaksi::whereDate('waktu_masuk', now()->toDateString())
+            ->orWhereDate('waktu_keluar', now()->toDateString())
+            ->get();
+
+        $chartDataMasuk = [0, 0, 0, 0, 0, 0];
+        $chartDataKeluar = [0, 0, 0, 0, 0, 0];
+        // Indices: 0=>06:00, 1=>09:00, 2=>12:00, 3=>15:00, 4=>18:00, 5=>21:00
+
+        foreach ($transaksiHariIni as $trx) {
+            if ($trx->waktu_masuk && $trx->waktu_masuk->isToday()) {
+                $hour = $trx->waktu_masuk->hour;
+                $idx = floor(($hour - 6) / 3);
+                if ($idx >= 0 && $idx <= 5) {
+                    $chartDataMasuk[$idx]++;
+                }
+            }
+            if ($trx->waktu_keluar && $trx->waktu_keluar->isToday()) {
+                $hour = $trx->waktu_keluar->hour;
+                $idx = floor(($hour - 6) / 3);
+                if ($idx >= 0 && $idx <= 5) {
+                    $chartDataKeluar[$idx]++;
+                }
+            }
+        }
+
+        return view('admin.dashboard', compact('totalUser', 'totalArea', 'totalKendaraan', 'totalLog', 'areas', 'chartDataMasuk', 'chartDataKeluar'));
     })->name('dashboard');
     Route::resource('user', App\Http\Controllers\Admin\UserController::class)->except(['create', 'edit', 'show']);
     Route::resource('tarif', App\Http\Controllers\Admin\TarifController::class)->except(['create', 'edit', 'show']);
